@@ -1,0 +1,46 @@
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        res = re.split("/", path)
+        out = []
+        itr = 0
+        while itr < len(res):
+            cur = res[itr]
+            if cur == "" :
+                if out:
+                    if out[-1] == "/":
+                        pass
+                    else:
+                        out.append("/")
+                else:
+                    out.append("/")
+            elif cur == "..":
+                while out:
+                    cur = out.pop()
+                    if cur == '/':
+                        if out:
+                            cur = out.pop()
+                        else:
+                            out.append("/")
+                        break
+                    else:
+                        break
+            elif cur == '.':
+                pass
+            else:
+                if out:
+                    if out[-1] != "/":
+                        out.append("/")
+                        out.append(cur)
+                    else:
+                        out.append(cur)
+                else:
+                    out.append("/")
+                    out.append(cur)                    
+            itr += 1
+        if out[-1] == "/":
+            out.pop()
+        ret = ""
+        while out:
+            cur = out.pop(0)
+            ret += cur
+        return "/" if ret == "" else ret
